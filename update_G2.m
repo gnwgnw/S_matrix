@@ -33,11 +33,17 @@ set(handles.plot_Y2, 'YData', imag(handles.G2));
 
 X = real(handles.G2);
 Y = imag(handles.G2);
+absG2 = abs(handles.G2);
 
 corrX = xcorr(X, du2, 'none');
 corrY = xcorr(Y, du2, 'none');
+corrAbs = xcorr(absG2, du2, 'none');
+
 set(handles.plot_xcorrX, 'YData', corrX);
 set(handles.plot_xcorrY, 'YData', corrY);
+set(handles.plot_xcorrAbs, 'YData', corrAbs);
+
+set(handles.plot_absG2, 'YData', abs(handles.G2));
 
 guidata(hObject, handles);
 end

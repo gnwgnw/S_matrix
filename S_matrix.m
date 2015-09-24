@@ -111,7 +111,6 @@ handles.plot_du2 = plot(du2);
 %Show XY components of G2
 axes(handles.axes4);
 hold on;
-axis equal;
 
 X = real(handles.G2);
 Y = imag(handles.G2);
@@ -122,14 +121,22 @@ handles.plot_Y2 = plot(Y);
 %Show corr G2 and du2
 axes(handles.axes5);
 hold on;
-axis equal;
 grid on;
+
+absG2 = abs(handles.G2);
 
 [corrX, lagX] = xcorr(X, du2, 'none');
 [corrY, lagY] = xcorr(Y, du2, 'none');
+[corrAbs, lagAbs] = xcorr(absG2, du2, 'none');
 
 handles.plot_xcorrX = plot(lagX, corrX);
 handles.plot_xcorrY = plot(lagY, corrY);
+handles.plot_xcorrAbs = plot(lagAbs, corrAbs);
+
+%Show abs G2
+axes(handles.axes6);
+
+handles.plot_absG2 = plot(absG2);
 
 % Choose default command line output for S_matrix
 handles.output = hObject;
