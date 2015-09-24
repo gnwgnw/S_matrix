@@ -108,6 +108,29 @@ hold on;
 plot(du1);
 handles.plot_du2 = plot(du2);
 
+%Show XY components of G2
+axes(handles.axes4);
+hold on;
+axis equal;
+
+X = real(handles.G2);
+Y = imag(handles.G2);
+
+handles.plot_X2 = plot(X);
+handles.plot_Y2 = plot(Y);
+
+%Show corr G2 and du2
+axes(handles.axes5);
+hold on;
+axis equal;
+grid on;
+
+[corrX, lagX] = xcorr(X, du2, 'none');
+[corrY, lagY] = xcorr(Y, du2, 'none');
+
+handles.plot_xcorrX = plot(lagX, corrX);
+handles.plot_xcorrY = plot(lagY, corrY);
+
 % Choose default command line output for S_matrix
 handles.output = hObject;
 
@@ -129,101 +152,22 @@ function varargout = S_matrix_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on slider movement.
-function s11_x_Callback(hObject, eventdata, handles)
-% hObject    handle to s11_x (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+function slider_Callback(hObject, eventdata, handles)
+tag_slider = get(hObject,'Tag');
+tag_text = strcat('text_', tag_slider);
 
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+tokens = regexp(tag_slider,'(\d{1})(\d{1})_([xy]{1})', 'tokens');
+i = str2double(tokens{1}{1});
+j = str2double(tokens{1}{2});
+is_real = tokens{1}{3};
 
-update_G2(hObject, handles, 1, 1, true, 'text_s11_x');
+if is_real == 'x'
+    is_real = true;
+else
+    is_real = false;
+end
 
-
-% --- Executes on slider movement.
-function s11_y_Callback(hObject, eventdata, handles)
-% hObject    handle to s11_y (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 1, 1, false, 'text_s11_y');
-
-
-% --- Executes on slider movement.
-function s21_x_Callback(hObject, eventdata, handles)
-% hObject    handle to s21_x (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 2, 1, true, 'text_s21_x');
-
-
-% --- Executes on slider movement.
-function s21_y_Callback(hObject, eventdata, handles)
-% hObject    handle to s21_y (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 2, 1, false, 'text_s21_y');
-
-
-% --- Executes on slider movement.
-function s12_x_Callback(hObject, eventdata, handles)
-% hObject    handle to s12_x (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 1, 2, true, 'text_s12_x');
-
-
-% --- Executes on slider movement.
-function s12_y_Callback(hObject, eventdata, handles)
-% hObject    handle to s12_y (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 1, 2, false, 'text_s12_y');
-
-
-% --- Executes on slider movement.
-function s22_x_Callback(hObject, eventdata, handles)
-% hObject    handle to s22_x (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 2, 2, true, 'text_s22_x');
-
-
-% --- Executes on slider movement.
-function s22_y_Callback(hObject, eventdata, handles)
-% hObject    handle to s22_y (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-update_G2(hObject, handles, 2, 2, false, 'text_s22_y');
-
+update_G2(hObject, handles, i, j, is_real, tag_text);
 
 function text_Callback(hObject, eventdata, handles)
 % hObject    handle to edit9 (see GCBO)

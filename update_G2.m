@@ -28,6 +28,17 @@ set(handles.plot_phi2, 'YData', phi2);
 du2 = diff(phi2);
 set(handles.plot_du2, 'YData', du2);
 
+set(handles.plot_X2, 'YData', real(handles.G2));
+set(handles.plot_Y2, 'YData', imag(handles.G2));
+
+X = real(handles.G2);
+Y = imag(handles.G2);
+
+corrX = xcorr(X, du2, 'none');
+corrY = xcorr(Y, du2, 'none');
+set(handles.plot_xcorrX, 'YData', corrX);
+set(handles.plot_xcorrY, 'YData', corrY);
+
 guidata(hObject, handles);
 end
 
