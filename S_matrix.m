@@ -56,8 +56,8 @@ function S_matrix_OpeningFcn(hObject, eventdata, handles, varargin)
 e = 0.01;
 
 p = e:e:20*pi;
-X = p .* sin(p);
-Y = (p) .* sin(p + pi / 2);
+X = p .* cos(p);
+Y = (p) .* sin(p);
 handles.G1 = complex(X, Y);
 
 axes(handles.axes1);
@@ -88,6 +88,8 @@ handles.plot_G2 = plot(handles.G2);
 handles.text_G2 = text(x, y, labels, 'Color', 'r');
 handles.labels_G2 = plot(x, y, 'rx');
 
+legend('G1', '', 'G2', '');
+
 %Unwrap hodograph G1 and G2
 phi1 = unwrap(angle(handles.G1));
 phi2 = unwrap(angle(handles.G2));
@@ -97,6 +99,8 @@ hold on;
 
 plot(phi1);
 handles.plot_phi2 = plot(phi2);
+
+legend('phi1', 'phi2');
 
 %Rate of change of the angle
 du1 = diff(phi1);
@@ -108,6 +112,8 @@ hold on;
 plot(du1);
 handles.plot_du2 = plot(du2);
 
+legend('du1', 'du2');
+
 %Show XY components of G2
 axes(handles.axes4);
 hold on;
@@ -117,6 +123,8 @@ Y = imag(handles.G2);
 
 handles.plot_X2 = plot(X);
 handles.plot_Y2 = plot(Y);
+
+legend('X', 'Y');
 
 %Show corr G2 and du2
 axes(handles.axes5);
@@ -133,10 +141,15 @@ handles.plot_xcorrX = plot(lagX, corrX);
 handles.plot_xcorrY = plot(lagY, corrY);
 handles.plot_xcorrAbs = plot(lagAbs, corrAbs);
 
+title('Correlation with du2');
+legend('X', 'Y', 'abs');
+
 %Show abs G2
 axes(handles.axes6);
 
 handles.plot_absG2 = plot(absG2);
+
+legend('absG2');
 
 % Choose default command line output for S_matrix
 handles.output = hObject;
