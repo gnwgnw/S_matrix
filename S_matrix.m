@@ -52,6 +52,7 @@ function S_matrix_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to S_matrix (see VARARGIN)
 
+%Create 'ideal' signal G1
 e = 0.01;
 
 p = e:e:20*pi;
@@ -65,31 +66,28 @@ axis equal;
 
 plot(handles.G1);
 
+%create labels
 handles.lth = 27;
 labels = cellstr( num2str([1:handles.lth]') );
 
-x = real(handles.G1);
-x = x(1:length(x)/handles.lth:end);
-y = imag(handles.G1);
-y = y(1:length(y)/handles.lth:end);
+[x, y] = extract_coords(handles.G1, handles.lth);
 
 text(x, y, labels, 'Color', 'b');
 plot(x, y, 'bx');
 
+%create signal G2 from G1 with S-matrix
 handles.S = zeros(2);
-
 handles.G2 = restore_G2(handles.G1, handles.S);
 
 handles.plot_G2 = plot(handles.G2);
 
-x = real(handles.G2);
-x = x(1:length(x)/handles.lth:end);
-y = imag(handles.G2);
-y = y(1:length(y)/handles.lth:end);
+%labels for G2
+[x, y] = extract_coords(handles.G2, handles.lth);
 
 handles.text_G2 = text(x, y, labels, 'Color', 'r');
 handles.labels_G2 = plot(x, y, 'rx');
 
+%Unwrap hodograph G1 and G2
 phi1 = unwrap(angle(handles.G1));
 phi2 = unwrap(angle(handles.G2));
 
@@ -99,6 +97,7 @@ hold on;
 plot(phi1);
 handles.plot_phi2 = plot(phi2);
 
+%Rate of change of the angle
 du1 = diff(phi1);
 du2 = diff(phi2);
 
